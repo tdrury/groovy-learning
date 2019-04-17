@@ -2,7 +2,7 @@ package regex
 
 import spock.lang.Specification
 
-class NegativeLookBehindTest extends Specification {
+class NegativeLookBehindSpec extends Specification {
 
     def setup() {
     }

@@ -2,7 +2,7 @@ package scripts
 
 import spock.lang.Specification
 
-class CallingScriptsTest extends Specification {
+class CallingScriptsSpec extends Specification {
 
     GroovyShell shell
 
@@ -21,7 +21,7 @@ class CallingScriptsTest extends Specification {
         result == 'hello world'
     }
 
-    def "call generic script method"() {
+    def "call generic script method with parameters"() {
         given:
         def script = shell.parse(new File('src/test/groovy/scripts', 'ScriptMethod.groovy'))
 
