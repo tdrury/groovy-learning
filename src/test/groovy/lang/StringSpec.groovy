@@ -48,4 +48,16 @@ class StringSpec extends Specification {
         //buildVersion[0..Math.max(buildVersion.length(),buildVersion.indexOf('-'))-1] == "5.10.6"
     }
 
+    def "remove part of string"() {
+
+        when:
+        def s = "blah-ms-docker"
+        def result = s - "-docker"
+        def nochange = s - "XYZ"
+
+        then:
+        result == "blah-ms"
+        nochange == s
+    }
+
 }
