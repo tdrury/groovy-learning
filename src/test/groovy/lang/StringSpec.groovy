@@ -43,9 +43,6 @@ class StringSpec extends Specification {
         filterVersion(snapshot) == "1.2.3"
         filterVersion(release) == "7.8.9"
         filterVersion(buildVersion) == "5.10.6"
-        //snapshot[0..Math.max(snapshot.length(),snapshot.indexOf('-'))-1] == "1.2.3"
-        //release[0..Math.max(release.length(),release.indexOf('-'))-1] == "7.8.9"
-        //buildVersion[0..Math.max(buildVersion.length(),buildVersion.indexOf('-'))-1] == "5.10.6"
     }
 
     def "remove part of string"() {
