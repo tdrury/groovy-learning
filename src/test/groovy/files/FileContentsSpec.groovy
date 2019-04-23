@@ -9,7 +9,7 @@ class FileContentsSpec extends Specification {
     def "replace line in Properties file"() {
 
         given:
-        File outputFile = new File('out/test', 'replace_1.properties')
+        File outputFile = new File('build/tmp', 'replace_1.properties')
         def sourceRegex = /sonar\.projectVersion=(.*)/
         def replacement = "sonar.projectVersion=7.8.9"
         def contents = propertiesFile.text
