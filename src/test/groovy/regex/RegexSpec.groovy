@@ -4,6 +4,16 @@ import spock.lang.Specification
 
 class RegexSpec extends Specification {
 
+	def "simple match"() {
+
+		when:
+		def name = 'foo-blue'
+
+		then:
+		name ==~ /foo-(blue|green)/
+		(name ==~ /bar-(blue|green)/) == false
+	}
+
     def "parse git branch"() {
         when:
         def gitBranch = "origin/master"
