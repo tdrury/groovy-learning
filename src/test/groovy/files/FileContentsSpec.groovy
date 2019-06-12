@@ -10,6 +10,7 @@ class FileContentsSpec extends Specification {
 
         given:
         File outputFile = new File('build/tmp', 'replace_1.properties')
+        outputFile.parentFile.mkdirs()
         def sourceRegex = /sonar\.projectVersion=(.*)/
         def replacement = "sonar.projectVersion=7.8.9"
         def contents = propertiesFile.text
