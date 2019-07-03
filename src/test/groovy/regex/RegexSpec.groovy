@@ -60,6 +60,35 @@ class RegexSpec extends Specification {
         repo == "dme-plant-ms"
     }
 
+	def "parse String representation from yaml of list of maps where map has one entry"() {
+
+		given:
+		// comes from build system via yaml
+		def ARGS='[[foo:Foo~Value-1], [bar:Bar~Value-2]]'
+		def key, value
+		def argList = []
+
+		when:
+//        def matcher = ARGS =~ /(\[([\w]+):([\w~-]+)\][\s,]?)*/
+		def matcher = ARGS =~ /\[([^\]])*/
+		println "matcher count=${matcher.count}"
+		matcher.eachWithIndex { m,i ->
+			println "m(${i})=${m}"
+			println "   [0]=${m[0]}"
+			def line = m[0].toString().replace('[', '')
+			println "line=${line}"
+			(key, value) = line.split(':')
+			println "key [${key}] = value [${value}]"
+			argList << [ (key): value ]
+		}
+		println "argList=${argList}"
+
+		then:
+		argList[0] == [ foo: 'Foo~Value-1' ]
+		argList[1] == [ bar: 'Bar~Value-2' ]
+	}
+
+
 
     def getOwnerAndRepoFromUrl(def url) {
         def matcher = url =~ /((git@|https:\/\/)([\w\.@]+)(\/|:))([\w,\-,\_]+)\/([\w,\-,\_]+).git/
