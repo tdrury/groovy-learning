@@ -1,0 +1,1831 @@
+---
+
+- name: Java PR
+  template: java-PR-pipeline.yaml
+  iterations:
+    - name: acme-act-api
+      stages.tasks.app: acme-act-api
+    - name: acme-ass-api
+      stages.tasks.app: acme-ass-api
+    - name: acme-aut-api
+      stages.tasks.app: acme-aut-api
+    - name: acme-dc-api
+      stages.tasks.app: acme-dc-api
+    - name: acme-dm-api
+      stages.tasks.app: acme-dm-api
+    - name: acme-ext-lib
+      stages.tasks.app: acme-ext-lib
+    - name: acme-frm-lib
+      stages.tasks.app: acme-frm-lib
+    - name: acme-int-api
+      stages.tasks.app: acme-int-api
+    - name: acme-inv-api
+      stages.tasks.app: acme-inv-api
+    - name: acme-nc-api
+      stages.tasks.app: acme-nc-api
+    - name: acme-num-api
+      stages.tasks.app: acme-num-api
+    - name: acme-plt-api
+      stages.tasks.app: acme-plt-api
+    - name: acme-pf-api
+      stages.tasks.app: acme-pf-api
+    - name: acme-pro-api
+      stages.tasks.app: acme-pro-api
+    - name: acme-pron-api
+      stages.tasks.app: acme-pron-api
+    - name: acme-wi-api
+      stages.tasks.app: acme-wi-api
+    - name: acmef-servreg-api
+      stages.tasks.app: acmef-servreg-api
+
+
+    # 
+
+    - name: acme-act-ms
+      stages.tasks.app: acme-act-ms
+    - name: acme-ass-ms
+      stages.tasks.app: acme-ass-ms
+    - name: acme-aut-ms
+      stages.tasks.app: acme-aut-ms
+    - name: acme-dc-ms
+      stages.tasks.app: acme-dc-ms
+    - name: acme-dm-ms
+      stages.tasks.app: acme-dm-ms
+    - name: acme-int-ms
+      stages.tasks.app: acme-int-ms
+    - name: acme-inv-ms
+      stages.tasks.app: acme-inv-ms
+    - name: acme-lab-ms
+      stages.tasks.app: acme-lab-ms
+    - name: acme-nc-ms
+      stages.tasks.app: acme-nc-ms
+    - name: acme-num-ms
+      stages.tasks.app: acme-num-ms
+    - name: acme-onb-ms
+      stages.tasks.app: acme-onb-ms
+    - name: acme-plt-ms
+      stages.tasks.app: acme-plt-ms
+    - name: acme-pf-ms
+      stages.tasks.app: acme-pf-ms
+    - name: acme-pro-ms
+      stages.tasks.app: acme-pro-ms
+    - name: acme-pron-ms
+      stages.tasks.app: acme-pron-ms
+    - name: acme-reo-ms
+      stages.tasks.app: acme-reo-ms
+    - name: acme-wi-ms
+      stages.tasks.app: acme-wi-ms
+
+    # 
+
+    - name: acmef-doc-ms
+      stages.tasks.app: acmef-doc-ms
+    - name: acmef-servreg-ms
+      stages.tasks.app: acmef-servreg-ms
+
+
+#
+#
+
+- name: UI5 PR
+  template: ui5-PR-pipeline.yaml
+  iterations:
+
+    - name: acme-ass-ui
+      stages.tasks.app: acme-ass-ui
+    - name: acme-dc-ui
+      stages.tasks.app: acme-dc-ui
+    - name: acme-dm-ui
+      stages.tasks.app: acme-dm-ui
+    - name: acme-int-ui
+      stages.tasks.app: acme-int-ui
+    - name: acme-inv-ui
+      stages.tasks.app: acme-inv-ui
+    - name: acme-lab-ui
+      stages.tasks.app: acme-lab-ui
+    - name: acme-nc-ui
+      stages.tasks.app: acme-nc-ui
+    - name: acme-num-ui
+      stages.tasks.app: acme-num-ui
+    - name: acme-plt-ui
+      stages.tasks.app: acme-plt-ui
+    - name: acme-pod-ui
+      stages.tasks.app: acme-pod-ui
+    - name: acme-pf-ui
+      stages.tasks.app: acme-pf-ui
+    - name: acme-pro-ui
+      stages.tasks.app: acme-pro-ui
+    - name: acme-pron-ui
+      stages.tasks.app: acme-pron-ui
+    - name: acme-reo-ui
+      stages.tasks.app: acme-reo-ui
+    - name: acme-sui5-ui-lib
+      stages.tasks.app: acme-sui5-ui-lib
+    - name: acme-wi-ui
+      stages.tasks.app: acme-wi-ui
+
+    - name: acmef-doc-ui
+      stages.tasks.app: acmef-doc-ui
+    - name: acmef-servreg-ui
+      stages.tasks.app: acmef-servreg-ui
+
+
+#
+# DEV
+#
+
+- name: J Lib DEV
+  template: j-lib-dev-pipeline-template.yaml
+  iterations:
+
+    - name: acme-parent-poms
+      stages.tasks.app: acme-parent-poms
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Trigger-Trigger
+        - dmdme: J~lib~DEV~acme-match-lib~Pl-acme-match-lib-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-approuter-mta~Pl-acme-approuter-mta-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-ass-ui~Pl-acme-ass-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-dc-ui~Pl-acme-dc-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-dm-ui~Pl-acme-dm-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-int-ui~Pl-acme-int-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-inv-ui~Pl-acme-inv-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-nc-ui~Pl-acme-nc-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-num-ui~Pl-acme-num-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-plt-ui~Pl-acme-plt-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-pro-ui~Pl-acme-pro-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-pron-ui~Pl-acme-pron-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-wi-ui~Pl-acme-wi-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-pf-ui~Pl-acme-pf-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-pod-ui~Pl-acme-pod-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acme-sui5-ui-lib~Pl-acme-sui5-ui-lib-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acmef-doc-ui~Pl-acmef-doc-ui-Trigger-Trigger
+        - dmdme: UI~MS~DEV~acmef-servreg-ui~Pl-acmef-servreg-ui-Trigger-Trigger
+
+    - name: acme-jacoco-lib
+      stages.tasks.app: acme-jacoco-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~DEV~acme-pro-ms~Pl-acme-pro-ms-Trigger-Trigger
+
+    - name: acme-javatest-lib
+      stages.tasks.app: acme-javatest-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-ext-lib~Pl-acme-ext-lib-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-aut-ms~Pl-acme-aut-ms-Trigger-Trigger
+
+    - name: acme-match-lib
+      stages.tasks.app: acme-match-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Trigger-Trigger
+
+    - name: acme-leg-lib
+      stages.tasks.app: acme-leg-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Trigger-Trigger
+
+    - name: acme-frm-lib
+      stages.tasks.app: acme-frm-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-match-lib~Pl-acme-match-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-leg-lib~Pl-acme-leg-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-javatest-lib~Pl-acme-javatest-lib-Trigger-Trigger
+        - dmdme: J~lib~DEV~acme-aut-api~Pl-acme-aut-api-Trigger-Trigger
+        - dmdme: J~lib~DEV~acme-int-api~Pl-acme-int-api-Trigger-Trigger
+        - dmdme: J~lib~DEV~acme-nc-api~Pl-acme-nc-api-Trigger-Trigger
+        - dmdme: J~lib~DEV~acme-num-api~Pl-acme-num-api-Trigger-Trigger
+        - dmdme: J~lib~DEV~acme-plt-api~Pl-acme-plt-api-Trigger-Trigger
+        - dmdme: J~lib~DEV~acme-pf-api~Pl-acme-pf-api-Trigger-Trigger
+        - dmdme: J~lib~DEV~acmef-servreg-api~Pl-acmef-servreg-api-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-onb-ms~Pl-acme-onb-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acmef-doc-ms~Pl-acmef-doc-ms-Trigger-Trigger
+
+    - name: acme-act-api
+      stages.tasks.app: acme-act-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~DEV~acme-act-ms~Pl-acme-act-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-int-ms~Pl-acme-int-ms-Trigger-Trigger
+
+    - name: acme-ass-api
+      stages.tasks.app: acme-ass-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-dm-api~Pl-acme-dm-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~DEV~acme-ass-ms~Pl-acme-ass-ms-Trigger-Trigger
+
+    - name: acme-aut-api
+      stages.tasks.app: acme-aut-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~DEV~acme-aut-ms~Pl-acme-aut-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-plt-ms~Pl-acme-plt-ms-Trigger-Trigger
+
+    - name: acme-dc-api
+      stages.tasks.app: acme-dc-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-ext-lib~Pl-acme-ext-lib-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-plt-ms~Pl-acme-plt-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-dm-ms~Pl-acme-dm-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-int-ms~Pl-acme-int-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-pro-ms~Pl-acme-pro-ms-Trigger-Trigger
+
+    - name: acme-dm-api
+      stages.tasks.app: acme-dm-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-pro-api~Pl-acme-pro-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-pron-api~Pl-acme-pron-api-Trigger-Trigger
+
+    - name: acme-ext-lib
+      stages.tasks.app: acme-ext-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-javatest-lib~Pl-acme-javatest-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acmef-servreg-api~Pl-acmef-servreg-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~DEV~acme-pron-ms~Pl-acme-pron-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-dc-ms~Pl-acme-dc-ms-Trigger-Trigger
+
+    - name: acme-int-api
+      stages.tasks.app: acme-int-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~DEV~acme-int-ms~Pl-acme-int-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-plt-ms~Pl-acme-plt-ms-Trigger-Trigger
+
+    - name: acme-inv-api
+      stages.tasks.app: acme-inv-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~DEV~acme-inv-ms~Pl-acme-inv-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-ass-ms~Pl-acme-ass-ms-Trigger-Trigger
+
+    - name: acme-nc-api
+      stages.tasks.app: acme-nc-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~DEV~acme-nc-ms~Pl-acme-nc-ms-Trigger-Trigger
+
+    - name: acme-num-api
+      stages.tasks.app: acme-num-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~DEV~acme-num-ms~Pl-acme-num-ms-Trigger-Trigger
+
+    - name: acme-plt-api
+      stages.tasks.app: acme-plt-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-pro-api~Pl-acme-pro-api-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-aut-ms~Pl-acme-aut-ms-Trigger-Trigger
+
+    - name: acme-pf-api
+      stages.tasks.app: acme-pf-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~DEV~acme-pf-ms~Pl-acme-pf-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-plt-ms~Pl-acme-plt-ms-Trigger-Trigger
+
+    - name: acme-pro-api
+      stages.tasks.app: acme-pro-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-plt-api~Pl-acme-plt-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-dm-api~Pl-acme-dm-api-Trigger-Trigger
+
+    - name: acme-pron-api
+      stages.tasks.app: acme-pron-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-dm-api~Pl-acme-dm-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-act-api~Pl-acme-act-api-Trigger-Trigger
+        - dmdme: J~lib~DEV~acme-dc-api~Pl-acme-dc-api-Trigger-Trigger
+        - dmdme: J~lib~DEV~acme-inv-api~Pl-acme-inv-api-Trigger-Trigger
+        - dmdme: J~lib~DEV~acme-wi-api~Pl-acme-wi-api-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-ass-ms~Pl-acme-ass-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-nc-ms~Pl-acme-nc-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-pf-ms~Pl-acme-pf-ms-Trigger-Trigger
+
+    - name: acme-wi-api
+      stages.tasks.app: acme-wi-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~DEV~acme-int-ms~Pl-acme-int-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-dm-ms~Pl-acme-dm-ms-Trigger-Trigger
+        - dmdme: J~MS~DEV~acme-wi-ms~Pl-acme-wi-ms-Trigger-Trigger
+
+    - name: acmef-servreg-api
+      stages.tasks.app: acmef-servreg-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~DEV~acmef-servreg-ms~Pl-acmef-servreg-ms-Trigger-Trigger
+        - dmdme: J~lib~DEV~acme-ext-lib~Pl-acme-ext-lib-Trigger-Trigger
+
+
+#
+# RC
+#
+
+- name: J Lib RC
+  template: j-lib-rc-pipeline-template.yaml
+  iterations:
+
+    - name: acme-parent-poms
+      stages.tasks.app: acme-parent-poms
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Trigger-Trigger
+        - dmdme: J~lib~RC~acme-match-lib~Pl-acme-match-lib-Trigger-Trigger
+        - dmdme: UI~MS~RC~acme-approuter-mta~Pl-acme-approuter-mta-Trigger-Trigger
+        - dmdme: UI~MS~RC~acme-dc-ui~Pl-acme-dc-ui-Trigger-Trigger
+        - dmdme: UI~MS~RC~acme-dm-ui~Pl-acme-dm-ui-Trigger-Trigger
+        - dmdme: UI~MS~RC~acme-int-ui~Pl-acme-int-ui-Trigger-Trigger
+        - dmdme: UI~MS~RC~acme-num-ui~Pl-acme-num-ui-Trigger-Trigger
+        - dmdme: UI~MS~RC~acme-plt-ui~Pl-acme-plt-ui-Trigger-Trigger
+        - dmdme: UI~MS~RC~acme-pro-ui~Pl-acme-pro-ui-Trigger-Trigger
+        - dmdme: UI~MS~RC~acme-pron-ui~Pl-acme-pron-ui-Trigger-Trigger
+        - dmdme: UI~MS~RC~acme-wi-ui~Pl-acme-wi-ui-Trigger-Trigger
+        - dmdme: UI~MS~RC~acme-pod-ui~Pl-acme-pod-ui-Trigger-Trigger
+        - dmdme: UI~MS~RC~acme-sui5-ui-lib~Pl-acme-sui5-ui-lib-Trigger-Trigger
+        - dmdme: UI~MS~RC~acmef-doc-ui~Pl-acmef-doc-ui-Trigger-Trigger
+        - dmdme: UI~MS~RC~acmef-servreg-ui~Pl-acmef-servreg-ui-Trigger-Trigger
+
+    - name: acme-jacoco-lib
+      stages.tasks.app: acme-jacoco-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RC~acme-pro-ms~Pl-acme-pro-ms-Trigger-Trigger
+
+    - name: acme-javatest-lib
+      stages.tasks.app: acme-javatest-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RC~acme-ext-lib~Pl-acme-ext-lib-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-aut-ms~Pl-acme-aut-ms-Trigger-Trigger
+
+    - name: acme-match-lib
+      stages.tasks.app: acme-match-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RC~acme-frm-lib~Pl-acme-frm-lib-Trigger-Trigger
+
+    - name: acme-leg-lib
+      stages.tasks.app: acme-leg-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RC~acme-frm-lib~Pl-acme-frm-lib-Trigger-Trigger
+
+    - name: acme-frm-lib
+      stages.tasks.app: acme-frm-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-match-lib~Pl-acme-match-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-leg-lib~Pl-acme-leg-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RC~acme-javatest-lib~Pl-acme-javatest-lib-Trigger-Trigger
+        - dmdme: J~lib~RC~acme-int-api~Pl-acme-int-api-Trigger-Trigger
+        - dmdme: J~lib~RC~acme-aut-api~Pl-acme-aut-api-Trigger-Trigger
+        - dmdme: J~lib~RC~acme-plt-api~Pl-acme-plt-api-Trigger-Trigger
+        - dmdme: J~lib~RC~acme-num-api~Pl-acme-num-api-Trigger-Trigger
+        - dmdme: J~lib~RC~acmef-servreg-api~Pl-acmef-servreg-api-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-onb-ms~Pl-acme-onb-ms-Trigger-Trigger
+        - dmdme: J~MS~RC~acmef-doc-ms~Pl-acmef-doc-ms-Trigger-Trigger
+      # temp 
+      stages[name=Promote].tasks[name=Qgate].arguments.scheck_quality_gate: false
+
+    - name: acme-aut-api
+      stages.tasks.app: acme-aut-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RC~acme-aut-ms~Pl-acme-aut-ms-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-plt-ms~Pl-acme-plt-ms-Trigger-Trigger
+
+    - name: acme-dc-api
+      stages.tasks.app: acme-dc-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RC~acme-ext-lib~Pl-acme-ext-lib-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-plt-ms~Pl-acme-plt-ms-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-dc-ms~Pl-acme-dc-ms-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-int-ms~Pl-acme-int-ms-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-pron-ms~Pl-acme-pron-ms-Trigger-Trigger
+
+    - name: acme-dm-api
+      stages.tasks.app: acme-dm-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-pro-api~Pl-acme-pro-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RC~acme-pron-api~Pl-acme-pron-api-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-dm-ms~Pl-acme-dm-ms-Trigger-Trigger
+
+    - name: acme-ext-lib
+      stages.tasks.app: acme-ext-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-javatest-lib~Pl-acme-javatest-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+        - dmdme: J~lib~RC~acmef-servreg-api~Pl-acmef-servreg-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RC~acme-pron-ms~Pl-acme-pron-ms-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-dc-ms~Pl-acme-dc-ms-Trigger-Trigger
+
+    - name: acme-int-api
+      stages.tasks.app: acme-int-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RC~acme-int-ms~Pl-acme-int-ms-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-plt-ms~Pl-acme-plt-ms-Trigger-Trigger
+
+    - name: acme-num-api
+      stages.tasks.app: acme-num-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RC~acme-num-ms~Pl-acme-num-ms-Trigger-Trigger
+
+    - name: acme-plt-api
+      stages.tasks.app: acme-plt-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RC~acme-pro-api~Pl-acme-pro-api-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-aut-ms~Pl-acme-aut-ms-Trigger-Trigger
+      stages[name=Promote].tasks[name=Qgate].arguments.scheck_quality_gate: false
+
+    - name: acme-pro-api
+      stages.tasks.app: acme-pro-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-plt-api~Pl-acme-plt-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RC~acme-dm-api~Pl-acme-dm-api-Trigger-Trigger
+
+    - name: acme-pron-api
+      stages.tasks.app: acme-pron-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-dm-api~Pl-acme-dm-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RC~acme-wi-api~Pl-acme-wi-api-Trigger-Trigger
+        - dmdme: J~lib~RC~acme-dc-api~Pl-acme-dc-api-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-pro-ms~Pl-acme-pro-ms-Trigger-Trigger
+
+    - name: acme-wi-api
+      stages.tasks.app: acme-wi-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RC~acme-int-ms~Pl-acme-int-ms-Trigger-Trigger
+        - dmdme: J~MS~RC~acme-wi-ms~Pl-acme-wi-ms-Trigger-Trigger
+
+    - name: acmef-servreg-api
+      stages.tasks.app: acmef-servreg-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RC~acmef-servreg-ms~Pl-acmef-servreg-ms-Trigger-Trigger
+        - dmdme: J~lib~RC~acme-ext-lib~Pl-acme-ext-lib-Trigger-Trigger
+
+
+#
+# REL
+#
+
+- name: J Lib RELEASE
+  template: j-lib-release-pipeline-template.yaml
+  iterations:
+
+    - name: acme-parent-poms
+      stages.tasks.app: acme-parent-poms
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Trigger-Trigger
+        - dmdme: J~lib~RELEASE~acme-match-lib~Pl-acme-match-lib-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acme-approuter-mta~Pl-acme-approuter-mta-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acme-dc-ui~Pl-acme-dc-ui-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acme-dm-ui~Pl-acme-dm-ui-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acme-int-ui~Pl-acme-int-ui-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acme-num-ui~Pl-acme-num-ui-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acme-plt-ui~Pl-acme-plt-ui-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acme-pro-ui~Pl-acme-pro-ui-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acme-pron-ui~Pl-acme-pron-ui-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acme-wi-ui~Pl-acme-wi-ui-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acme-pod-ui~Pl-acme-pod-ui-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acme-sui5-ui-lib~Pl-acme-sui5-ui-lib-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acmef-doc-ui~Pl-acmef-doc-ui-Trigger-Trigger
+        - dmdme: UI~MS~RELEASE~acmef-servreg-ui~Pl-acmef-servreg-ui-Trigger-Trigger
+
+    - name: acme-jacoco-lib
+      stages.tasks.app: acme-jacoco-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RELEASE~acme-pro-ms~Pl-acme-pro-ms-Trigger-Trigger
+
+    - name: acme-javatest-lib
+      stages.tasks.app: acme-javatest-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-ext-lib~Pl-acme-ext-lib-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-aut-ms~Pl-acme-aut-ms-Trigger-Trigger
+
+    - name: acme-match-lib
+      stages.tasks.app: acme-match-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-frm-lib~Pl-acme-frm-lib-Trigger-Trigger
+
+    - name: acme-leg-lib
+      stages.tasks.app: acme-leg-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=SCheck].tasks[name=SCheck].arguments.publish_scheck: false
+      stages[name=SCheck].tasks[name=SCheck].arguments.scheck_quality_gate: false
+      stages[name=FCheck],remove:
+      stages[name=Promote].predecessor:
+        - Version and Build
+      stages[name=Promote].tasks[name=Qgate],remove:
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-frm-lib~Pl-acme-frm-lib-Trigger-Trigger
+
+    - name: acme-frm-lib
+      stages.tasks.app: acme-frm-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-match-lib~Pl-acme-match-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-leg-lib~Pl-acme-leg-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-javatest-lib~Pl-acme-javatest-lib-Trigger-Trigger
+        - dmdme: J~lib~RELEASE~acme-int-api~Pl-acme-int-api-Trigger-Trigger
+        - dmdme: J~lib~RELEASE~acme-aut-api~Pl-acme-aut-api-Trigger-Trigger
+        - dmdme: J~lib~RELEASE~acme-plt-api~Pl-acme-plt-api-Trigger-Trigger
+        - dmdme: J~lib~RELEASE~acme-num-api~Pl-acme-num-api-Trigger-Trigger
+        - dmdme: J~lib~RELEASE~acmef-servreg-api~Pl-acmef-servreg-api-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-onb-ms~Pl-acme-onb-ms-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acmef-doc-ms~Pl-acmef-doc-ms-Trigger-Trigger
+      stages[name=Promote].tasks[name=Qgate].arguments.scheck_quality_gate: false
+
+    - name: acme-aut-api
+      stages.tasks.app: acme-aut-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RELEASE~acme-aut-ms~Pl-acme-aut-ms-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-plt-ms~Pl-acme-plt-ms-Trigger-Trigger
+
+    - name: acme-dc-api
+      stages.tasks.app: acme-dc-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-ext-lib~Pl-acme-ext-lib-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-plt-ms~Pl-acme-plt-ms-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-dc-ms~Pl-acme-dc-ms-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-int-ms~Pl-acme-int-ms-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-pron-ms~Pl-acme-pron-ms-Trigger-Trigger
+
+    - name: acme-dm-api
+      stages.tasks.app: acme-dm-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-pro-api~Pl-acme-pro-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-pron-api~Pl-acme-pron-api-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-dm-ms~Pl-acme-dm-ms-Trigger-Trigger
+
+    - name: acme-ext-lib
+      stages.tasks.app: acme-ext-lib
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-javatest-lib~Pl-acme-javatest-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acmef-servreg-api~Pl-acmef-servreg-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RELEASE~acme-pron-ms~Pl-acme-pron-ms-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-dc-ms~Pl-acme-dc-ms-Trigger-Trigger
+
+    - name: acme-int-api
+      stages.tasks.app: acme-int-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RELEASE~acme-int-ms~Pl-acme-int-ms-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-plt-ms~Pl-acme-plt-ms-Trigger-Trigger
+
+    - name: acme-num-api
+      stages.tasks.app: acme-num-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RELEASE~acme-num-ms~Pl-acme-num-ms-Trigger-Trigger
+
+    - name: acme-plt-api
+      stages.tasks.app: acme-plt-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-pro-api~Pl-acme-pro-api-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-aut-ms~Pl-acme-aut-ms-Trigger-Trigger
+
+    - name: acme-pro-api
+      stages.tasks.app: acme-pro-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-plt-api~Pl-acme-plt-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-dm-api~Pl-acme-dm-api-Trigger-Trigger
+
+    - name: acme-pron-api
+      stages.tasks.app: acme-pron-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-dm-api~Pl-acme-dm-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-wi-api~Pl-acme-wi-api-Trigger-Trigger
+        - dmdme: J~lib~RELEASE~acme-dc-api~Pl-acme-dc-api-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-pro-ms~Pl-acme-pro-ms-Trigger-Trigger
+
+    - name: acme-wi-api
+      stages.tasks.app: acme-wi-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RELEASE~acme-int-ms~Pl-acme-int-ms-Trigger-Trigger
+        - dmdme: J~MS~RELEASE~acme-wi-ms~Pl-acme-wi-ms-Trigger-Trigger
+
+    - name: acmef-servreg-api
+      stages.tasks.app: acmef-servreg-api
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_goals: clean deploy
+      stages[name=SCheck].tasks[name=SCheck].arguments.mvn_options: 
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=PostPipe].tasks[name=PostPipe].arguments.addEnvVars.TRIGGER_JOBNAMES:
+        - dmdme: J~MS~RELEASE~acmef-servreg-ms~Pl-acmef-servreg-ms-Trigger-Trigger
+        - dmdme: J~lib~RELEASE~acme-ext-lib~Pl-acme-ext-lib-Trigger-Trigger
+
+
+#
+#  DEV 
+#
+
+- name: J MS DEV
+  template: j-ms-dev-pipeline-template.yaml
+  iterations:
+
+    - name: acme-act-ms
+      stages.tasks.app: acme-act-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-act-api~Pl-acme-act-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+      stages[name=Dep IT and Test].tasks[name=Get Coverage],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Run IT],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Reset Coverage],remove: ""
+
+    - name: acme-ass-ms
+      stages.tasks.app: acme-ass-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-inv-api~Pl-acme-inv-api-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-ass-api~Pl-acme-ass-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=Dep IT and Test].tasks[name=Get Coverage],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Run IT],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Reset Coverage],remove: ""
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-aut-ms
+      stages.tasks.app: acme-aut-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-javatest-lib~Pl-acme-javatest-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-aut-api~Pl-acme-aut-api-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-plt-api~Pl-acme-plt-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-dc-ms
+      stages.tasks.app: acme-dc-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-ext-lib~Pl-acme-ext-lib-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=Dep IT and Test].tasks[name=Get Coverage],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Run IT],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Reset Coverage],remove: ""
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-dm-ms
+      stages.tasks.app: acme-dm-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-wi-api~Pl-acme-wi-api-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-act-api~Pl-acme-act-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+      stages[name=DEP SI and Test].predecessor:
+        - FCheck
+        - VCheck
+
+    - name: acme-int-ms
+      stages.tasks.app: acme-int-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-int-api~Pl-acme-int-api-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-wi-api~Pl-acme-wi-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+      stages[name=DEP SI and Test].predecessor:
+        - FCheck
+        - VCheck
+
+    - name: acme-inv-ms
+      stages.tasks.app: acme-inv-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-inv-api~Pl-acme-inv-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+      stages[name=DEP SI and Test].predecessor:
+        - FCheck
+        - VCheck
+
+    - name: acme-nc-ms
+      stages.tasks.app: acme-nc-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-nc-api~Pl-acme-nc-api-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=Dep IT and Test].tasks[name=Get Coverage],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Run IT],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Reset Coverage],remove: ""
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-num-ms
+      stages.tasks.app: acme-num-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-num-api~Pl-acme-num-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=Dep IT and Test].tasks[name=Get Coverage],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Run IT],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Reset Coverage],remove: ""
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-onb-ms
+      stages.tasks.app: acme-onb-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=Dep IT and Test].tasks[name=Get Coverage],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Run IT],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Reset Coverage],remove: ""
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-plt-ms
+      stages.tasks.app: acme-plt-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-aut-api~Pl-acme-aut-api-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-int-api~Pl-acme-int-api-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-pf-api~Pl-acme-pf-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=Local Build and SCheck].tasks[Local Build and SCheck].arguments.mvn_goals: -P jacoco-it clean verify
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-pf-ms
+      stages.tasks.app: acme-pf-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-pf-api~Pl-acme-pf-api-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=Local Build and SCheck].tasks[Local Build and SCheck].arguments.mvn_goals: -P jacoco-it clean verify
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-pro-ms
+      stages.tasks.app: acme-pro-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-pron-ms
+      stages.tasks.app: acme-pron-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-ext-lib~Pl-acme-ext-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-inv-api~Pl-acme-inv-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+      stages,add:
+        - name: Docker
+          predecessor:
+            - Version and Build
+          triggered_by: predecessor
+          tasks:
+            - name: Build
+              app: acme-pron-ms
+              type: docker-build
+              arguments:
+                shell: find . -name '*-springboot.war' -exec cp {} ${WORKSPACE}/app.jar \;
+                dockerfile: ms/Dockerfile
+                docker_artifact_file: app.jar
+                copy_artifacts:
+                  pattern: "**/target/*-springboot.war"
+                  task: Make Stage
+                  allow_empty: false
+      #temp 
+      stages[name=DEP SI and Test].predecessor:
+        - FCheck
+        - VCheck
+
+    - name: acme-wi-ms
+      stages.tasks.app: acme-wi-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-wi-api~Pl-acme-wi-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+      stages,add:
+        - name: Docker
+          predecessor:
+            - Version and Build
+          triggered_by: predecessor
+          tasks:
+            - name: Build
+              app: acme-wi-ms
+              type: docker-build
+              arguments:
+                shell: find . -name '*-springboot.war' -exec cp {} ${WORKSPACE}/app.jar \;
+                dockerfile: ms/Dockerfile
+                docker_artifact_file: app.jar
+                copy_artifacts:
+                  pattern: "**/target/*-springboot.war"
+                  task: Make Stage
+                  allow_empty: false
+
+    - name: acme-reo-ms
+      stages.tasks.app: acme-reo-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=Dep IT and Test].predecessor:
+        - Version and Build
+
+    - name: acme-lab-ms
+      stages.tasks.app: acme-lab-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=Dep IT and Test].predecessor:
+        - Version and Build
+
+    - name: acmef-doc-ms
+      stages.tasks.app: acmef-doc-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=Dep IT and Test].tasks[name=Get Coverage],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Run IT],remove: ""
+      stages[name=Dep IT and Test].tasks[name=Reset Coverage],remove: ""
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acmef-servreg-ms
+      stages.tasks.app: acmef-servreg-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~DEV~acmef-servreg-api~Pl-acmef-servreg-api-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.war"
+      stages[name=Local Build and SCheck].tasks[Local Build and SCheck].arguments.mvn_goals: -P jacoco-it clean verify
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+      stages,add:
+        - name: Docker
+          predecessor:
+            - Version and Build
+          triggered_by: predecessor
+          tasks:
+            - name: Build
+              app: acmef-servreg-ms
+              type: docker-build
+              arguments:
+                shell: find . -name '*-springboot.war' -exec cp {} ${WORKSPACE}/app.jar \;
+                dockerfile: ms/Dockerfile
+                docker_artifact_file: app.jar
+                copy_artifacts:
+                  pattern: "**/target/*-springboot.war"
+                  task: Make Stage
+                  allow_empty: false
+
+
+#
+# RC
+#
+
+- name: J MS RC
+  template: j-ms-rc-pipeline-template.yaml
+  iterations:
+
+    - name: acme-aut-ms
+      stages.tasks.app: acme-aut-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-javatest-lib~Pl-acme-javatest-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-aut-api~Pl-acme-aut-api-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-plt-api~Pl-acme-plt-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-dc-ms
+      stages.tasks.app: acme-dc-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-ext-lib~Pl-acme-ext-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-dm-ms
+      stages.tasks.app: acme-dm-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-dm-api~Pl-acme-dm-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-int-ms
+      stages.tasks.app: acme-int-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-int-api~Pl-acme-int-api-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-wi-api~Pl-acme-wi-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-num-ms
+      stages.tasks.app: acme-num-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-num-api~Pl-acme-num-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-onb-ms
+      stages.tasks.app: acme-onb-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+      stages,add:
+        - name: Docker
+          predecessor:
+            - Version and Build
+          triggered_by: predecessor
+          tasks:
+            - name: Build
+              app: acme-onb-ms
+              type: docker-build
+              arguments:
+                shell: find . -name '*-springboot.war' -exec cp {} ${WORKSPACE}/app.jar \;
+                dockerfile: ms/Dockerfile
+                docker_artifact_file: app.jar
+                copy_artifacts:
+                  pattern: "**/target/*-springboot.war"
+                  task: Make Stage
+                  allow_empty: false
+
+    - name: acme-plt-ms
+      stages.tasks.app: acme-plt-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-int-api~Pl-acme-int-api-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-aut-api~Pl-acme-aut-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-pro-ms
+      stages.tasks.app: acme-pro-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+      # temp
+      stages[name=FanIn].tasks[name=Qgate].arguments.scheck_quality_gate: false
+
+    - name: acme-pron-ms
+      stages.tasks.app: acme-pron-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-ext-lib~Pl-acme-ext-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-wi-ms
+      stages.tasks.app: acme-wi-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-wi-api~Pl-acme-wi-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acmef-doc-ms
+      stages.tasks.app: acmef-doc-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-reo-ms
+      stages.tasks.app: acme-reo-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: java/pom.xml
+      stages[name=FCheck].tasks[name=FCheck].arguments.root_pom: java/pom.xml
+
+    - name: acme-lab-ms
+      stages.tasks.app: acme-lab-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: java/pom.xml
+      stages[name=FCheck].tasks[name=FCheck].arguments.root_pom: java/pom.xml
+
+    - name: acmef-servreg-ms
+      stages.tasks.app: acmef-servreg-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RC~acmef-servreg-api~Pl-acmef-servreg-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+#
+# REL
+#
+
+- name: J MS RELEASE
+  template: j-ms-release-pipeline-template.yaml
+  iterations:
+
+    - name: acme-aut-ms
+      stages.tasks.app: acme-aut-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-javatest-lib~Pl-acme-javatest-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-aut-api~Pl-acme-aut-api-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-plt-api~Pl-acme-plt-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-dc-ms
+      stages.tasks.app: acme-dc-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-ext-lib~Pl-acme-ext-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-dm-ms
+      stages.tasks.app: acme-dm-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-dm-api~Pl-acme-dm-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-int-ms
+      stages.tasks.app: acme-int-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-int-api~Pl-acme-int-api-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-wi-api~Pl-acme-wi-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-num-ms
+      stages.tasks.app: acme-num-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-num-api~Pl-acme-num-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-onb-ms
+      stages.tasks.app: acme-onb-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-plt-ms
+      stages.tasks.app: acme-plt-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-int-api~Pl-acme-int-api-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-aut-api~Pl-acme-aut-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-pro-ms
+      stages.tasks.app: acme-pro-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-pron-ms
+      stages.tasks.app: acme-pron-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-ext-lib~Pl-acme-ext-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-dc-api~Pl-acme-dc-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-wi-ms
+      stages.tasks.app: acme-wi-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-wi-api~Pl-acme-wi-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acmef-doc-ms
+      stages.tasks.app: acmef-doc-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+    - name: acme-reo-ms
+      stages.tasks.app: acme-reo-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-pron-api~Pl-acme-pron-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: java/pom.xml
+      stages[name=FCheck].tasks[name=FCheck].arguments.root_pom: java/pom.xml
+
+    - name: acme-lab-ms
+      stages.tasks.app: acme-lab-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acme-frm-lib~Pl-acme-frm-lib-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: java/pom.xml
+      stages[name=FCheck].tasks[name=FCheck].arguments.root_pom: java/pom.xml
+
+    - name: acmef-servreg-ms
+      stages.tasks.app: acmef-servreg-ms
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-jacoco-lib~Pl-acme-jacoco-lib-Version~and~Build-Version
+        - dmdme: J~lib~RELEASE~acmef-servreg-api~Pl-acmef-servreg-api-Version~and~Build-Version
+      stages[name=VCheck].tasks[name=VCheck].arguments.root_pom: ms/pom.xml
+
+#
+# DEV
+#
+
+- name: UI MS DEV
+  template: ui-ms-dev-pipeline-template.yaml
+  iterations:
+
+    - name: acme-approuter-mta
+      stages.tasks.app: acme-approuter-mta
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck],remove: ""
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.tar.gz"
+      #        stages[name=TanSrc].tasks[name=TanSrc].arguments.preserveWorkspace: true
+      stages[name=DEP SI and Test].predecessor:
+        - Chex
+      stages,add:
+        - name: Docker
+          predecessor:
+            - Version and Build
+          triggered_by: predecessor
+          tasks:
+            - name: Build
+              app: acme-approuter-mta
+              type: docker-build
+              arguments:
+                shell: find . -name '*.tar.gz' -exec cp {} app.tar.gz \;
+                dockerfile: assembly/Dockerfile
+                docker_artifact_file: app.tar.gz
+                copy_artifacts:
+                  pattern: "**/target/*.tar.gz"
+                  task: Make Stage
+                  allow_empty: false
+
+    - name: acme-ass-ui
+      stages.tasks.app: acme-ass-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-dc-ui
+      stages.tasks.app: acme-dc-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-dm-ui
+      stages.tasks.app: acme-dm-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.tar.gz"
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+      stages,add:
+        - name: Docker
+          predecessor:
+            - Version and Build
+          triggered_by: predecessor
+          tasks:
+            - name: Build
+              app: acme-dm-ui
+              type: docker-build
+              arguments:
+                shell: find . -name '*.tar.gz' -exec cp {} app.tar.gz \;
+                dockerfile: assembly/Dockerfile
+                docker_artifact_file: app.tar.gz
+                copy_artifacts:
+                  pattern: "**/target/*.tar.gz"
+                  task: Make Stage
+                  allow_empty: false
+
+    - name: acme-int-ui
+      stages.tasks.app: acme-int-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-inv-ui
+      stages.tasks.app: acme-inv-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-nc-ui
+      stages.tasks.app: acme-nc-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-num-ui
+      stages.tasks.app: acme-num-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-plt-ui
+      stages.tasks.app: acme-plt-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-pro-ui
+      stages.tasks.app: acme-pro-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-pron-ui
+      stages.tasks.app: acme-pron-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-pod-ui
+      stages.tasks.app: acme-pod-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.tar.gz"
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+      stages,add:
+        - name: Docker
+          predecessor:
+            - Version and Build
+          triggered_by: predecessor
+          tasks:
+            - name: Build
+              app: acme-pod-ui
+              type: docker-build
+              arguments:
+                shell: find . -name '*.tar.gz' -exec cp {} app.tar.gz \;
+                dockerfile: assembly/Dockerfile
+                docker_artifact_file: app.tar.gz
+                copy_artifacts:
+                  pattern: "**/target/*.tar.gz"
+                  task: Make Stage
+                  allow_empty: false
+
+    - name: acme-pf-ui
+      stages.tasks.app: acme-pf-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.tar.gz"
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+      stages,add:
+        - name: Docker
+          predecessor:
+            - Version and Build
+          triggered_by: predecessor
+          tasks:
+            - name: Build
+              app: acme-pf-ui
+              type: docker-build
+              arguments:
+                shell: find . -name '*.tar.gz' -exec cp {} app.tar.gz \;
+                dockerfile: assembly/Dockerfile
+                docker_artifact_file: app.tar.gz
+                copy_artifacts:
+                  pattern: "**/target/*.tar.gz"
+                  task: Make Stage
+                  allow_empty: false
+
+    - name: acme-sui5-ui-lib
+      stages.tasks.app: acme-sui5-ui-lib
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=Version and Build].tasks[name=Make Stage].arguments.archive_artifacts: "**/target/*.tar.gz"
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+      stages[name=Chex],remove: ""
+      stages[name=DEP SI and Test].predecessor:
+        - Dep IT and Test
+        - SCheck
+      stages,add:
+        - name: Docker
+          predecessor:
+            - Version and Build
+          triggered_by: predecessor
+          tasks:
+            - name: Build
+              app: acme-sui5-ui-lib
+              type: docker-build
+              arguments:
+                shell: find . -name '*.tar.gz' -exec cp {} app.tar.gz \;
+                dockerfile: assembly/Dockerfile
+                docker_artifact_file: app.tar.gz
+                copy_artifacts:
+                  pattern: "**/target/*.tar.gz"
+                  task: Make Stage
+                  allow_empty: false
+
+    - name: acme-wi-ui
+      stages.tasks.app: acme-wi-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acmef-doc-ui
+      stages.tasks.app: acmef-doc-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acmef-servreg-ui
+      stages.tasks.app: acmef-servreg-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~DEV~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-reo-ui
+      stages.tasks.app: acme-reo-ui
+      stages[name=SCheck].tasks[name=Unit Tests and SCheck].arguments.scheck_quality_gate: false
+      stages[name=SCheck].tasks[name=Unit Tests and SCheck].arguments.scheck_branch: master
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+      stages[name=Version and Build].tasks[name=Version].arguments.copy_artifacts,remove: ""
+      stages[name=Version and Build].tasks[name=Version].arguments.archive_artifacts,remove: ""
+      stages[name=TanSrc].tasks[name=TanSrc].tools.node: 8.15.1
+
+    - name: acme-lab-ui
+      stages.tasks.app: acme-lab-ui
+      stages[name=SCheck].tasks[name=Unit Tests and SCheck].arguments.scheck_quality_gate: false
+      stages[name=SCheck].tasks[name=Unit Tests and SCheck].arguments.scheck_branch: master
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+      stages[name=Version and Build].tasks[name=Version].arguments.copy_artifacts,remove: ""
+      stages[name=Version and Build].tasks[name=Version].arguments.archive_artifacts,remove: ""
+      stages[name=TanSrc].tasks[name=TanSrc].tools.node: 8.15.1
+
+
+
+#
+# RC
+#
+
+- name: UI MS RC
+  template: ui-ms-rc-pipeline-template.yaml
+  iterations:
+
+    - name: acme-approuter-mta
+      stages.tasks.app: acme-approuter-mta
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck],remove: ""
+      stages[name=FanIn].predecessor:
+        - Dep Up
+        - Chex
+
+    - name: acme-dc-ui
+      stages.tasks.app: acme-dc-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-dm-ui
+      stages.tasks.app: acme-dm-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-int-ui
+      stages.tasks.app: acme-int-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-num-ui
+      stages.tasks.app: acme-num-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-plt-ui
+      stages.tasks.app: acme-plt-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-pro-ui
+      stages.tasks.app: acme-pro-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-pron-ui
+      stages.tasks.app: acme-pron-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-pod-ui
+      stages.tasks.app: acme-pod-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-sui5-ui-lib
+      stages.tasks.app: acme-sui5-ui-lib
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+      stages[name=Chex],remove: ""
+      stages[name=FanIn].predecessor:
+        - Dep Up
+        - SCheck
+    #          - TanSrc
+
+    - name: acme-wi-ui
+      stages.tasks.app: acme-wi-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acmef-doc-ui
+      stages.tasks.app: acmef-doc-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acmef-servreg-ui
+      stages.tasks.app: acmef-servreg-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RC~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-reo-ui
+      stages.tasks.app: acme-reo-ui
+      stages[name=SCheck].tasks[name=Unit Tests and SCheck].arguments.scheck_branch: rc
+      stages[name=TanSrc].tasks[name=TanSrc].tools.node: 8.15.1
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-lab-ui
+      stages.tasks.app: acme-lab-ui
+      stages[name=SCheck].tasks[name=Unit Tests and SCheck].arguments.scheck_branch: rc
+      stages[name=TanSrc].tasks[name=TanSrc].tools.node: 8.15.1
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+
+#
+# RELEASE 
+#
+
+- name: UI MS RELEASE
+  template: ui-ms-release-pipeline-template.yaml
+  iterations:
+
+    - name: acme-approuter-mta
+      stages.tasks.app: acme-approuter-mta
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck],remove: ""
+      stages[name=Dep HF].tasks[name=Qgate].arguments.scheck_quality_gate: false
+      stages[name=Dep HF].predecessor:
+        - Version and Build
+        - Chex
+
+    - name: acme-dc-ui
+      stages.tasks.app: acme-dc-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+      stages[name=Dep HF].predecessor:
+        - Version and Build
+        - Chex
+
+    - name: acme-dm-ui
+      stages.tasks.app: acme-dm-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-int-ui
+      stages.tasks.app: acme-int-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-num-ui
+      stages.tasks.app: acme-num-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-plt-ui
+      stages.tasks.app: acme-plt-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-pro-ui
+      stages.tasks.app: acme-pro-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-pron-ui
+      stages.tasks.app: acme-pron-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-pod-ui
+      stages.tasks.app: acme-pod-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-sui5-ui-lib
+      stages.tasks.app: acme-sui5-ui-lib
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+      stages[name=Chex],remove: ""
+      stages[name=Dep HF].predecessor:
+        - Version and Build
+        - SCheck
+
+    - name: acme-wi-ui
+      stages.tasks.app: acme-wi-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acmef-doc-ui
+      stages.tasks.app: acmef-doc-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acmef-servreg-ui
+      stages.tasks.app: acmef-servreg-ui
+      stages[name=Version and Build].tasks[name=Version].arguments.addEnvVars.UPSTREAM_JOBNAMES:
+        - dmdme: J~lib~RELEASE~acme-parent-poms~Pl-acme-parent-poms-Version~and~Build-Version
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-reo-ui
+      stages.tasks.app: acme-reo-ui
+      stages[name=SCheck].tasks[name=Unit Tests and SCheck].arguments.scheck_branch: release
+      stages[name=SCheck].tasks[name=Unit Tests and SCheck].arguments.shell: "npm run --prefix web test"
+      stages[name=TanSrc].tasks[name=TanSrc].tools.node: 8.15.1
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+    - name: acme-lab-ui
+      stages.tasks.app: acme-lab-ui
+      stages[name=SCheck].tasks[name=Unit Tests and SCheck].arguments.scheck_branch: release
+      stages[name=SCheck].tasks[name=Unit Tests and SCheck].arguments.shell: "npm run --prefix web test"
+      stages[name=TanSrc].tasks[name=TanSrc].tools.node: 8.15.1
+      stages[name=SCheck].tasks[name=Send to GGG],remove: ""
+
+

@@ -14,7 +14,8 @@ dependencies {
             'junit:junit:4.12',
             'org.spockframework:spock-core:1.2-groovy-2.5',
             'cglib:cglib-nodep:3.2.10',
-            'org.objenesis:objenesis:1.2'
+            'org.objenesis:objenesis:1.2',
+		    'org.yaml:snakeyaml:1.25'
     )
 }
 

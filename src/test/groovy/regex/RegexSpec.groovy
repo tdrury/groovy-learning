@@ -88,8 +88,6 @@ class RegexSpec extends Specification {
 		argList[1] == [ bar: 'Bar~Value-2' ]
 	}
 
-
-
     def getOwnerAndRepoFromUrl(def url) {
         def matcher = url =~ /((git@|https:\/\/)([\w\.@]+)(\/|:))([\w,\-,\_]+)\/([\w,\-,\_]+).git/
         if (matcher?.hasGroup()) {
