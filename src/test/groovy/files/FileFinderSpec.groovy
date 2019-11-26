@@ -27,11 +27,11 @@ class FileFinderSpec extends Specification {
 	def "canonical path"() {
 		when:
 		def rootDir = new File('.')
-		def sourceMainGroovyDir = new File(rootDir, "src/main/groovy")
+		def sourceMainGroovyDir = new File(rootDir, "src/test/groovy")
 
 		then:
 		rootDir.exists()
 		sourceMainGroovyDir.exists()
-		sourceMainGroovyDir.canonicalPath - rootDir.canonicalPath == "/src/main/groovy"
+		sourceMainGroovyDir.canonicalPath - rootDir.canonicalPath == "/src/test/groovy"
 	}
 }
