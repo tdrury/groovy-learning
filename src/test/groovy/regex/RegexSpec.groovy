@@ -14,51 +14,60 @@ class RegexSpec extends Specification {
 		(name ==~ /bar-(blue|green)/) == false
 	}
 
-    def "parse git branch"() {
-        when:
-        def gitBranch = "origin/master"
-        def (remote, branch) = gitBranch.split("/")
+	def "get single value from string - nongreedy"() {
+		when:
+		def s = 'Java~Microservice~DEV~dme-plant-ms~Pipeline-dme-plant-ms-Deploy~to~DC1~PROD-Deploy~to~DC1~PROD'
+		def matcher = s =~ /Pipeline-(.*?)-Deploy/ // non-greedy will stop at first 'Deploy'
 
-        then:
-        remote == "origin"
-        branch == "master"
-    }
+		then:
+		matcher[0][1] == "dme-plant-ms"
+	}
 
-    def "parse https-formatted git url"() {
-        when:
-        def gitUrl = "https://github.wdf.sap.corp/DigitalManufacturing/dme-plant-ms.git"
-        def matcher =  gitUrl =~ /((git@|https:\/\/)([\w\.@]+)(\/|:))([\w,\-,\_]+)\/([\w,\-,\_]+).git/
-        println "matcher[0]=${matcher[0]}"
+	def "parse git branch"() {
+		when:
+		def gitBranch = "origin/master"
+		def (remote, branch) = gitBranch.split("/")
 
-        then:
-        matcher.hasGroup()
-        println "matcher[0] size=${matcher[0].size()}"
-        matcher[0].size() == 7
-        matcher[0][5] == "DigitalManufacturing"
-        matcher[0][6] == "dme-plant-ms"
-    }
+		then:
+		remote == "origin"
+		branch == "master"
+	}
 
-    def "parse ssh-formatted git url"() {
-        when:
-        def gitUrl = "git@github.wdf.sap.corp:DigitalManufacturing/dme-plant-ms.git"
-        def matcher =  gitUrl =~ /((git@|https:\/\/)([\w\.@]+)(\/|:))([\w,\-,\_]+)\/([\w,\-,\_]+).git/
-        println "matcher[0]=${matcher[0]}"
+	def "parse https-formatted git url"() {
+		when:
+		def gitUrl = "https://github.wdf.sap.corp/DigitalManufacturing/dme-plant-ms.git"
+		def matcher =  gitUrl =~ /((git@|https:\/\/)([\w\.@]+)(\/|:))([\w,\-,\_]+)\/([\w,\-,\_]+).git/
+		println "matcher[0]=${matcher[0]}"
 
-        then:
-        matcher.hasGroup()
-        matcher[0].size() == 7
-        matcher[0][5] == "DigitalManufacturing"
-        matcher[0][6] == "dme-plant-ms"
-    }
+		then:
+		matcher.hasGroup()
+		println "matcher[0] size=${matcher[0].size()}"
+		matcher[0].size() == 7
+		matcher[0][5] == "DigitalManufacturing"
+		matcher[0][6] == "dme-plant-ms"
+	}
 
-    def "return multiple values"() {
-        when:
-        def (String owner, String repo) = getOwnerAndRepoFromUrl("git@github.wdf.sap.corp:DigitalManufacturing/dme-plant-ms.git")
+	def "parse ssh-formatted git url"() {
+		when:
+		def gitUrl = "git@github.wdf.sap.corp:DigitalManufacturing/dme-plant-ms.git"
+		def matcher =  gitUrl =~ /((git@|https:\/\/)([\w\.@]+)(\/|:))([\w,\-,\_]+)\/([\w,\-,\_]+).git/
+		println "matcher[0]=${matcher[0]}"
 
-        then:
-        owner == "DigitalManufacturing"
-        repo == "dme-plant-ms"
-    }
+		then:
+		matcher.hasGroup()
+		matcher[0].size() == 7
+		matcher[0][5] == "DigitalManufacturing"
+		matcher[0][6] == "dme-plant-ms"
+	}
+
+	def "return multiple values"() {
+		when:
+		def (String owner, String repo) = getOwnerAndRepoFromUrl("git@github.wdf.sap.corp:DigitalManufacturing/dme-plant-ms.git")
+
+		then:
+		owner == "DigitalManufacturing"
+		repo == "dme-plant-ms"
+	}
 
 	def "parse String representation from yaml of list of maps where map has one entry"() {
 
@@ -88,12 +97,12 @@ class RegexSpec extends Specification {
 		argList[1] == [ bar: 'Bar~Value-2' ]
 	}
 
-    def getOwnerAndRepoFromUrl(def url) {
-        def matcher = url =~ /((git@|https:\/\/)([\w\.@]+)(\/|:))([\w,\-,\_]+)\/([\w,\-,\_]+).git/
-        if (matcher?.hasGroup()) {
-            if (matcher[0].size() == 7) {
-                return [ matcher[0][5], matcher[0][6] ]
-            }
-        }
-    }
+	def getOwnerAndRepoFromUrl(def url) {
+		def matcher = url =~ /((git@|https:\/\/)([\w\.@]+)(\/|:))([\w,\-,\_]+)\/([\w,\-,\_]+).git/
+		if (matcher?.hasGroup()) {
+			if (matcher[0].size() == 7) {
+				return [ matcher[0][5], matcher[0][6] ]
+			}
+		}
+	}
 }
