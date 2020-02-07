@@ -1,21 +1,26 @@
 package collections
 
+import spock.lang.Shared
 import spock.lang.Specification
 
 class ListOfBeanSpec extends Specification {
 
-	def "create set from attribute of bean"() {
-		given:
-		def beans = [
-				new POB(firstName: "Ned", lastName: "Flanders", age: 42),
-				new POB(firstName: "Homer", lastName: "Simpson", age: 42),
-				new POB(firstName: "Bart", lastName: "Simpson", age: 12),
-				new POB(firstName: "Marge", lastName: "Simpson", age: 41),
-				new POB(firstName: "Fred", lastName: "Flintstone", age: 40)
-		]
+	@Shared
+	List<Person> people
 
+	def setupSpec() {
+		people = [
+			new Person(firstName: "Ned", lastName: "Flanders", age: 42),
+			new Person(firstName: "Homer", lastName: "Simpson", age: 42),
+			new Person(firstName: "Bart", lastName: "Simpson", age: 12),
+			new Person(firstName: "Marge", lastName: "Simpson", age: 41),
+			new Person(firstName: "Fred", lastName: "Flintstone", age: 40)
+		]
+	}
+
+	def "create set from attribute of bean"() {
 		when:
-		Set<String> lastNames = beans.collect { it.lastName }
+		Set<String> lastNames = people.collect { it.lastName }
 		def sortedLastNames = lastNames.sort()
 
 		then:
@@ -25,10 +30,26 @@ class ListOfBeanSpec extends Specification {
 		sortedLastNames[1] == "Flintstone"
 		sortedLastNames[2] == "Simpson"
 	}
+
+	def "sort list of beans by bean attribute"() {
+		when:
+		def sortedByAge =      people.sort { it.age }
+		def sortedAgesAsList = people.sort { it.age }.collect { it.age }
+		def sortedAgesAsSet =  people.sort { it.age }.collect { it.age } as Set
+
+		then:
+		sortedByAge[0].age == 12
+		sortedByAge[1].age == 40
+		sortedByAge[2].age == 41
+		sortedByAge[3].age == 42
+		sortedByAge[4].age == 42
+		sortedAgesAsList == [ 12, 40, 41, 42, 42 ]
+		sortedAgesAsSet == [ 12, 40, 41, 42 ] as Set
+	}
 }
 
-class POB {
-	def firstName
-	def lastName
-	def age
+class Person {
+	String firstName
+	String lastName
+	int age
 }
