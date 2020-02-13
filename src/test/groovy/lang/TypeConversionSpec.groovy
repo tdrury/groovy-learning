@@ -2,8 +2,6 @@ package lang
 
 import spock.lang.Specification
 
-import java.text.NumberFormat
-
 import static spock.util.matcher.HamcrestMatchers.closeTo
 
 class TypeConversionSpec extends Specification {
@@ -54,6 +52,20 @@ class TypeConversionSpec extends Specification {
 
 		then:
 		result == "2foo"
+	}
+
+	def "double to int"() {
+		expect:
+		10.0 as int == 10
+		10.1 as int == 10
+		10.9 as int == 10
+	}
+
+	def "double to int with rounding"() {
+		expect:
+		10.0.round(0) == 10
+		10.1.round(0) == 10
+		10.9.round(0) == 11
 	}
 
 }
