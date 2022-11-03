@@ -6,13 +6,14 @@ repositories {
 }
 
 dependencies {
-	compile(
-		'org.codehaus.groovy:groovy-all:2.5.2',
+	implementation(
+		'org.codehaus.groovy:groovy-all:3.0.13',
+        'org.codehaus.groovy:groovy-cli-commons:3.0.13',
 		'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1',
 		'commons-logging:commons-logging:1.2'
 	)
-	testCompile(
-		'org.spockframework:spock-core:1.2-groovy-2.5',
+	testImplementation(
+		'org.spockframework:spock-core:2.2-groovy-3.0',
 		'cglib:cglib-nodep:3.2.10',
 		'org.objenesis:objenesis:1.2',
 		'org.yaml:snakeyaml:1.25'

@@ -34,4 +34,33 @@ class FileFinderSpec extends Specification {
 		sourceMainGroovyDir.exists()
 		sourceMainGroovyDir.canonicalPath - rootDir.canonicalPath == "/src/test/groovy"
 	}
+
+	def "File paths"() {
+		when:
+		def rootDir = new File('.')
+		def sourceMainGroovyDir = new File(rootDir, "src/test/groovy")
+		def thisTest = new File("src/test/groovy/files", "FileFinderSpec.groovy")
+
+		println "thisTest=[${thisTest}]"
+		println "   toString=[${thisTest.toString()}]"
+		println "   canonical file=[${thisTest.canonicalFile}]"
+		println "   canonical path=[${thisTest.canonicalPath}]"
+		println "   absolute file=[${thisTest.absoluteFile}]"
+		println "   absolute path=[${thisTest.absolutePath}]"
+
+		then:
+		rootDir.exists()
+		sourceMainGroovyDir.exists()
+		sourceMainGroovyDir.canonicalPath - rootDir.canonicalPath == "/src/test/groovy"
+	}
+
+	def "File no arg"() {
+		when:
+		File.
+		def f = new File()
+		println "f=[${f}]"
+
+		then:
+		f.exists()
+	}
 }
